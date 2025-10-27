@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>💝 Your Magical Gift 💝</title>
+<style>
+  :root {
+    --accent1: #a64aff;
+    --accent2: #ff5fd2;
+    --bg: #0b0018;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, var(--accent1) 10%, var(--bg) 90%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+  h1 { font-size: 2em; margin-bottom: 10px; text-align: center; color: #ffb3ff; }
+  .video-container { width: 100%; max-width: 900px; height: 50vh; margin-bottom: 20px; position: sticky; top: 20px; z-index: 10; }
+  iframe { width: 100%; height: 100%; border-radius: 15px; border: none; }
+  .message-container {
+    width: 100%; max-width: 900px;
+    background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.1); min-height: 35vh;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .page { display: none; font-size: 1.1em; line-height: 1.6em; }
+  .page.active { display: block; }
+  .nav-buttons { display: flex; justify-content: space-between; margin-top: 15px; }
+  .nav-buttons button {
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    border: none; padding: 10px 20px; color: #fff; border-radius: 10px; cursor: pointer; transition: 0.3s; font-size: 1em;
+  }
+  .nav-buttons button:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<h1>💖 A Magical Gift for You 💖</h1>
+<div class="video-container" id="videoContainer"></div>
+
+<div class="message-container">
+  <div class="page active" id="page0"></div>
+  <div class="page" id="page1"></div>
+  <div class="nav-buttons">
+    <button id="prevBtn">⬅ Previous</button>
+    <button id="nextBtn">Next ➡</button>
+  </div>
+</div>
+
+<script>
+  function getParam(name) { return decodeURIComponent(new URLSearchParams(window.location.search).get(name) || ""); }
+
+  const sender = getParam('sender') || "Someone";
+  const friend = getParam('friend') || "Friend";
+  const videoURL = getParam('video') || "";
+
+  function getYouTubeID(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  }
+
+  const videoId = getYouTubeID(videoURL);
+  if(videoId){
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    document.getElementById("videoContainer").appendChild(iframe);
+  } else {
+    document.getElementById("videoContainer").textContent = "Invalid YouTube Link 😢";
+  }
+
+  const pages = [
+    `<p>Hey ${friend} 🌸,</p>
+     <p>${sender} wanted to send you this special gift just to remind you how amazing you are! 💖</p>
+     <p>Every moment we share is magical, and I hope this little surprise brightens your day! ✨🌈</p>`,
+     
+    `<p>Remember, you are cherished, loved, and simply unforgettable. 💝</p>
+     <p>Enjoy the video and know that someone special is thinking of you right now! 🎶💌</p>
+     <p>With lots of love, 💕<br>${sender}</p>`
+  ];
+
+  pages.forEach((content, i) => { document.getElementById(`page${i}`).innerHTML = content; });
+
+  let currentPage = 0;
+  const totalPages = pages.length;
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  function updatePage() {
+    for(let i=0;i<totalPages;i++){ document.getElementById(`page${i}`).classList.remove("active"); }
+    document.getElementById(`page${currentPage}`).classList.add("active");
+  }
+
+  prevBtn.addEventListener("click", () => { currentPage = (currentPage - 1 + totalPages) % totalPages; updatePage(); });
+  nextBtn.addEventListener("click", () => { currentPage = (currentPage + 1) % totalPages; updatePage(); });
+</script>
+
+</body>
+  </html>
