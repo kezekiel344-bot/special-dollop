@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Special Friendship Gift 💝</title>
+<style>
+  :root {
+    --accent1:#a64aff;
+    --accent2:#ff5fd2;
+    --bg:#0b0018;
+  }
+  body {
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background: radial-gradient(circle at top, var(--accent1)10%, var(--bg)90%);
+    color:#fff;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    text-align:center;
+  }
+  h1 { font-size:1.8em; margin-bottom:10px; color:#ffb3ff; }
+  form {
+    background:rgba(255,255,255,0.05);
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(255,255,255,0.1);
+    max-width:400px;
+    width:100%;
+  }
+  input { width:100%; margin:10px 0; padding:10px; border:none; border-radius:10px; font-size:1em; }
+  input:focus { outline:2px solid var(--accent2); }
+  button {
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    border:none;
+    padding:12px 20px;
+    color:#fff;
+    border-radius:10px;
+    font-size:1em;
+    cursor:pointer;
+    transition:0.3s;
+  }
+  button:hover { opacity:0.85; }
+  .output { margin-top:15px; word-wrap:break-word; }
+  .copy-btn {
+    margin-top:10px;
+    background:rgba(255,255,255,0.2);
+    border:none;
+    color:#fff;
+    padding:8px 15px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .copy-btn:hover { background:rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+<h1>💝 Create Your Special Gift 💝</h1>
+<form id="giftForm">
+  <input type="text" id="sender" placeholder="Your Name" required />
+  <input type="text" id="friend" placeholder="Friend's Name" required />
+  <input type="url" id="video" placeholder="YouTube Video Link" required />
+  <button type="submit">Generate Link 🔗</button>
+</form>
+
+<div class="output" id="output" style="display:none;">
+  <p>Here’s your gift link 🎁:</p>
+  <a id="giftLink" href="#" target="_blank" style="color:#ffb3ff;"></a><br>
+  <button class="copy-btn" id="copyBtn">Copy Link 📋</button>
+</div>
+
+<script>
+  const form = document.getElementById('giftForm');
+  const output = document.getElementById('output');
+  const giftLink = document.getElementById('giftLink');
+  const copyBtn = document.getElementById('copyBtn');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const sender = encodeURIComponent(document.getElementById('sender').value.trim());
+    const friend = encodeURIComponent(document.getElementById('friend').value.trim());
+    const video = encodeURIComponent(document.getElementById('video').value.trim());
+
+    const base = "Receiver.html"; // local Receiver page
+
+    const link = `${base}?sender=${sender}&friend=${friend}&video=${video}`;
+
+    giftLink.href = link;
+    giftLink.textContent = link;
+    output.style.display = 'block';
+  });
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(giftLink.href);
+    copyBtn.textContent = "Copied ✅";
+    setTimeout(() => copyBtn.textContent = "Copy Link 📋", 1500);
+  });
+</script>
+</body>
+  </html>
